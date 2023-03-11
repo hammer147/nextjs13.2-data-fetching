@@ -1,7 +1,12 @@
+import { UserSchema } from '@/types'
+import { z } from 'zod'
+
 export async function getAllUsers() {
-  const res = await fetch('https://jsonplaceholder.typicode.com/users')
-  if (!res.ok) {
-    throw new Error(res.statusText)
+  const response = await fetch('https://jsonplaceholder.typicode.com/users')
+  if (!response.ok) {
+    throw new Error(response.statusText)
   }
-  return res.json()
+  const data = await response.json()
+  const users = z.array(UserSchema).parse(data)
+  return users
 }

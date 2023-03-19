@@ -6,9 +6,10 @@ export async function getUser(userId: string) {
     throw new Error(response.statusText)
   }
   const data = await response.json()
-  const user = UserSchema.parse(data)
+
+  const result = UserSchema.safeParse(data)
   await sleep(1000) // Simulate slow network
-  return user
+  return result // { success: false; error: ZodError } or { success: true; data: User }
 }
 
 const sleep = async (milliseconds: number) => {

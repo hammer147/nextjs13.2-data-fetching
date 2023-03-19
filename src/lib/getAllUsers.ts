@@ -7,6 +7,6 @@ export async function getAllUsers() {
     throw new Error(response.statusText)
   }
   const data = await response.json()
-  const users = z.array(UserSchema).parse(data)
-  return users
+  const usersResult = z.array(UserSchema).safeParse(data)
+  return usersResult // { success: false; error: ZodError } or { success: true; data: User[] }
 }

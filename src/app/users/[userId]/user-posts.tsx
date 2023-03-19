@@ -12,7 +12,7 @@ export default async function UserPosts({ postsPromise }: Props) {
       {posts.map(post => (
         <li key={post.id} className='mb-5'>
           <article>
-            <h2 className='text-green-400 font-bold'>{post.title}</h2>
+            <h2 className='font-bold text-green-400'>{post.title}</h2>
             <p>{post.body}</p>
           </article>
         </li>

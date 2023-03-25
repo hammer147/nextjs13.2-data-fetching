@@ -1,1 +1,1 @@
-todo: implement runtime type validation for the api responses with zod
+A complete demo of data fetching with Next.js 13.2 using zod for runtime type checking and validation.

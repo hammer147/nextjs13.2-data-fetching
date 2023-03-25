@@ -1,15 +1,19 @@
 import { Post } from '@/types'
+import { ZodError } from 'zod'
 
 type Props = {
-  postsPromise: Promise<Post[]>
+  postsPromise: Promise<
+    { success: false; error: ZodError } | { success: true; data: Post[] } | undefined
+  >
 }
 
 export default async function UserPosts({ postsPromise }: Props) {
-  const posts = await postsPromise
+  const postsResult = await postsPromise
+  if (!postsResult || !postsResult.success) return <div>no posts found</div>
 
   return (
     <ul>
-      {posts.map(post => (
+      {postsResult.data.map(post => (
         <li key={post.id} className='mb-5'>
           <article>
             <h2 className='font-bold text-green-400'>{post.title}</h2>

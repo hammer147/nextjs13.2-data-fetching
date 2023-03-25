@@ -7,7 +7,7 @@ import { notFound } from 'next/navigation'
 
 export async function generateMetadata({ params: { userId } }: { params: { userId: string } }) {
   const userResult = await getUser(userId)
-  if (!userResult.success) {
+  if (!userResult || !userResult.success) {
     return {
       title: 'User Not Found'
     }
@@ -37,7 +37,7 @@ export default async function UserPage({ params: { userId } }: Props) {
   // Note that we are not waiting for userPostsPromise to resolve,
   // we are passing it as a promise to an async component, that we wrap in a Suspense boundary
 
-  if (!userResult.success) return notFound()
+  if (!userResult || !userResult.success) notFound() // Note: notFound() does not require you to use return notFound() due to using the TypeScript never type
 
   return (
     <>
@@ -50,8 +50,11 @@ export default async function UserPage({ params: { userId } }: Props) {
   )
 }
 
+// the loading fallback will never be visible for pages that are statically generated, 
+// comment out the following lines to see the difference
+
 export async function generateStaticParams() {
   const usersResult = await getAllUsers()
-  if (!usersResult.success) return []
+  if (!usersResult || !usersResult.success) return []
   return usersResult.data.map(user => ({ userId: user.id.toString() }))
 }

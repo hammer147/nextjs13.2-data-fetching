@@ -3,10 +3,8 @@ import { z } from 'zod'
 
 export async function getAllUsers() {
   const response = await fetch('https://jsonplaceholder.typicode.com/users')
-  if (!response.ok) {
-    throw new Error(response.statusText)
-  }
+  if (!response.ok) return undefined
   const data = await response.json()
-  const usersResult = z.array(UserSchema).safeParse(data)
-  return usersResult // { success: false; error: ZodError } or { success: true; data: User[] }
+  const result = z.array(UserSchema).safeParse(data)
+  return result // Promise<{ success: false; error: ZodError } | { success: true; data: User[] }> 
 }

@@ -1,11 +1,10 @@
 import { getAllUsers } from '@/lib/getAllUsers'
-import { User } from '@/types'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 export async function generateMetadata() {
   const usersResult = await getAllUsers()
-  if (!usersResult.success) {
+  if (!usersResult || !usersResult.success) {
     return {
       title: 'No Users Found'
     }
@@ -21,7 +20,7 @@ type Props = {}
 export default async function UsersPage({}: Props) {
   const usersResult = await getAllUsers()
 
-  if (!usersResult.success) return notFound()
+  if (!usersResult || !usersResult.success) notFound() // Note: notFound() does not require you to use return notFound() due to using the TypeScript never type
 
   return (
     <section>

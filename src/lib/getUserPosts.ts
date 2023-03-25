@@ -1,19 +1,15 @@
 import { PostSchema } from '@/types'
 import { z } from 'zod'
+import { sleep } from './sleep'
 
 export async function getUserPosts(userId: string) {
   const response = await fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`)
-  if (!response.ok) {
-    throw new Error(response.statusText)
-  }
+  if (!response.ok) return undefined
   const data = await response.json()
-  const posts = z.array(PostSchema).parse(data)
-  await sleep(3000) // Simulate slow network
-  return posts
-}
+  const result = z.array(PostSchema).safeParse(data)
 
-const sleep = async (milliseconds: number) => {
-  await new Promise(resolve => {
-    return setTimeout(resolve, milliseconds)
-  })
+  // Simulate slow network
+  await sleep(3000)
+
+  return result // Promise<{ success: false; error: ZodError } | { success: true; data: Post[] }>
 }

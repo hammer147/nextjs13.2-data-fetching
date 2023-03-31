@@ -1,11 +1,11 @@
-import { UserSchema } from '@/types'
+import { userSchema } from '@/types'
 import { sleep } from './sleep'
 
 export async function getUser(userId: string) {
   const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
   if (!response.ok) return undefined
   const data = await response.json()
-  const result = UserSchema.safeParse(data)
+  const result = userSchema.safeParse(data)
 
   // Simulate slow network
   await sleep(1000)

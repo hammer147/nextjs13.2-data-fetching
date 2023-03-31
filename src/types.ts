@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-export const UserSchema = z.object({
+export const userSchema = z.object({
   id: z.number(),
   name: z.string(),
   username: z.string(),
@@ -21,13 +21,13 @@ export const UserSchema = z.object({
   })
 })
 
-export type User = z.infer<typeof UserSchema>
+export type User = z.infer<typeof userSchema>
 
-export const PostSchema = z.object({
+export const postSchema = z.object({
   userId: z.number(),
   id: z.number(),
   title: z.string(),
   body: z.string()
 })
 
-export type Post = z.infer<typeof PostSchema>
+export type Post = z.infer<typeof postSchema>
